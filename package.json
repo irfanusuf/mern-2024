@@ -1,0 +1,17 @@
+{
+  "name": "test-js-",
+  "version": "1.0.0",
+  "description": "this is just a test ",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "hbs": "^4.2.0",
+    "mongoose": "^8.7.1",
+    "nodemon": "^3.1.7"
+  }
+}
