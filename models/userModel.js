@@ -13,4 +13,4 @@ profilePicUrl: {type : String },
 })
 
 
-module.export = {User}
+module.exports = {User}

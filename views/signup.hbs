@@ -9,6 +9,46 @@
     
 
 
-    this is signup page 
+    <div>
+       <h2>Register With Us  </h2> 
+    </div>
+
+{{#if errMessage}}
+
+    <div>
+        <p> {{errMessage}}</p>
+    </div>
+{{/if}}
+
+
+{{#if successMessage}}
+
+    <div>
+        <p> {{successMessage}}</p>
+    </div>
+{{/if}}
+
+    <form method="post" action="/user/signup">
+
+
+            <label> Username </label>
+            <input type="text" name="username" >
+
+            <label> Email </label>
+            <input type="email" name="email" >
+
+            <label> Password </label>
+            <input type="password" name="password" >
+
+
+            <button type="submit"> Submit </button>
+
+
+    </form>
+
+
+
+
+
 </body>
 </html>

@@ -14,4 +14,4 @@ const connDb = async () => {
 
 
 
-module.exports = {connDb}
+module.exports = {connDb}     // export 
