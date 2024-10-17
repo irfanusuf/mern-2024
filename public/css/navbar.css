@@ -1,0 +1,24 @@
+.navbar {
+  background-color: rgb(20, 19, 19);
+  display: flex;
+  color: aliceblue;
+
+  > ul {
+    display: flex;
+
+    > li {
+      list-style-type: none;
+      margin-left: 20px;
+      >a{
+        color: antiquewhite;
+        text-decoration: none;
+        transition: all 0.3s linear;
+        &:hover{
+            color: rgb(221, 57, 90);
+            cursor: pointer;
+            transform: scale(1.03);
+        }
+      }
+    }
+  }
+}

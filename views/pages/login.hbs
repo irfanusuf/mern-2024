@@ -1,0 +1,47 @@
+
+<link rel="stylesheet" href="/css/register.css">
+
+
+
+<div class="register-container">
+    <h2>Login To Your Account</h2>
+
+
+    {{#if errMessage}}
+
+    <div class="err-message">
+        <p> {{errMessage}}</p>
+    </div>
+
+    {{/if}}
+
+
+    {{#if successMessage}}
+
+    <div class="succes-message">
+        <p> {{successMessage}}</p>
+    </div>
+
+    {{/if}}
+
+    <form method="post" action="/user/signup" class="register-form">
+
+
+
+
+
+
+        <label> Email </label>
+        <input type="email" name="email">
+
+        <label> Password </label>
+        <input type="password" name="password">
+
+        <p> Dont have an accound Goto <a href="/user/signup">Register </a> </p>
+        <button type="submit"> Login </button>
+
+
+    </form>
+
+
+</div>

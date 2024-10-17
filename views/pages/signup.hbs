@@ -1,0 +1,46 @@
+
+<link rel="stylesheet" href="/css/register.css">
+
+
+
+<div class="register-container">
+    <h2>Register With Us </h2>
+
+
+    {{#if errMessage}}
+
+    <div class="err-message">
+        <p> {{errMessage}}</p>
+    </div>
+
+    {{/if}}
+
+
+    {{#if successMessage}}
+
+    <div class="succes-message">
+        <p> {{successMessage}}</p>
+    </div>
+
+    {{/if}}
+
+    <form method="post" action="/user/signup" class="register-form">
+
+
+        <label> Username </label>
+        <input type="text" name="username">
+
+        <label> Email </label>
+        <input type="email" name="email">
+
+        <label> Password </label>
+        <input type="password" name="password">
+
+        <p> If u are already an user go to <a href="/user/login">Login </a> </p>
+        <button type="submit"> Register </button>
+
+
+    </form>
+
+
+</div>
