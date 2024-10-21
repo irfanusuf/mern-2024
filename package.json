@@ -1,20 +1,22 @@
 {
-  "name": "test-js-",
+  "name": "Royal Furnitures",
   "version": "1.0.0",
-  "description": "this is just a test ",
+  "description": "This is an e-commerce website  dealing with furniture",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js"
   },
-  "author": "",
+  "author": "irfan_usuf",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
+    "cloudinary": "^2.5.1",
     "express": "^4.21.1",
     "express-handlebars": "^8.0.1",
     "hbs": "^4.2.0",
     "mongoose": "^8.7.1",
+    "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.7"
   }
 }

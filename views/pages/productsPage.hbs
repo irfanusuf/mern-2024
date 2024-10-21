@@ -1,0 +1,41 @@
+<style>
+    h1 {
+        text-align: center;
+        color: blue;
+    }
+    .cards {
+        width: 70%;
+        margin: 50px auto;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .card {
+        border: 1px solid black;
+        width: 300px;
+        height: 400px;
+        >img {
+            width: 300px;
+        }
+    }
+</style>
+
+<div class="cards">
+    {{#each products}}
+    
+    <div class="card">
+
+      
+        <img src="{{this.imageUrl}}" alt="">
+    
+       
+        <h2>{{this.productName}} </h2>
+
+        <p> {{this.description}}</p>
+
+    </div>
+
+    {{/each}}
+
+
+</div>

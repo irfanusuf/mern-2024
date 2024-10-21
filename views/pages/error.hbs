@@ -1,0 +1,25 @@
+<style>
+    .error {
+
+        min-height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+</style>
+
+
+
+
+
+<div class="error">
+
+    {{#if message}}
+
+    <p style="color: red;"> {{message}} </p>
+    <a href="{{link}}"> Back </a>
+
+    {{/if}}
+
+</div>

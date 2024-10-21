@@ -1,0 +1,92 @@
+<style>
+    .create-container {
+
+        display: flex;
+        justify-content: center;
+        width: 600px;
+        margin: auto;
+        background-color: antiquewhite;
+        padding: 40px;
+
+        >form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+            >label {
+                font-weight: 700;
+                margin-bottom: 5px;
+            }
+
+            >input {
+                padding: 5px 10px;
+                margin-bottom: 5px;
+
+
+            }
+
+            >button {
+
+                background-color: crimson;
+                padding: 5px 10px;
+
+
+            }
+        }
+
+
+    }
+</style>
+
+
+
+
+
+
+<div class="create-container">
+
+
+    <form method="post" action="/product/create" enctype="multipart/form-data">
+        <label> Product Name </label>
+
+        <input type="text" name="productName">
+
+        <label> Product Description </label>
+
+        <input type="text" name="description">
+
+
+        <label> Product Size</label>
+
+        <input type="text" name="size">
+
+
+        <label> Product Color</label>
+
+        <input type="text" name="color">
+
+
+
+        <label> Product Quantity</label>
+
+        <input type="Number" name="qty">
+
+
+
+        <label> Product Price</label>
+
+        <input type="Number" name="price">
+
+        <label> Product Image</label>
+
+        <input type="file" name="image">
+
+
+        <button type="submit"> Create </button>
+    </form>
+
+
+
+
+
+</div>
