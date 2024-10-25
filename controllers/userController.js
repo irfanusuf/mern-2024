@@ -1,5 +1,6 @@
 const { User } = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken")
 
 const handleRegister = async (req, res) => {
   try {
@@ -38,6 +39,7 @@ const handleRegister = async (req, res) => {
 const handleLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const secretKey = "randomString"
 
     if (email === "" || password === "") {
       return res.render("login", { errMessage: "All credentials Required!" });
@@ -55,9 +57,19 @@ const handleLogin = async (req, res) => {
     );
 
     if (verifyPass) {
-      return res.status(200).render("login", {
-        successMessage: "Logged in succesFully!",
-      });
+      const id  = checkExistingUser._id
+      const createToken = await jwt.sign({id} ,secretKey)
+
+      res.cookie("token" ,createToken ,{
+          maxAge: 30 * 24 * 60 * 60 * 1000, // milliseconds /// 30 days
+          secure: false,
+          httpOnly: true,
+        
+      })
+
+      res.redirect("/products")
+
+      
     } else {
       return res.render("login", { errMessage: "PassWord Incorrect!" });
     }

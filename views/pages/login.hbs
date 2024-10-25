@@ -1,8 +1,85 @@
-
 <link rel="stylesheet" href="/css/register.css">
 
 
 
+<div class="container p-5">
+
+    <div class="h1 p-3"> Login To your Account </div>
+
+    <form class="p-3" method="post" action="/user/login">
+
+
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+
+
+
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+        </div>
+
+
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            <div class="form-text"> New User! <a href="/user/signup">Register </a></div>
+        </div>
+
+
+        <button type="submit" class="btn btn-success">Login</button>
+
+
+
+    </form>
+
+
+    {{#if errMessage}}
+
+    <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+        <strong>{{errMessage}}</strong>
+        {{!-- You should check in on some of those fields below. --}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+
+    {{/if}}
+
+    {{#if successMessage}}
+
+    <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+        <strong>{{successMessage}}</strong>
+        {{!-- You should check in on some of those fields below. --}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    {{/if}}
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{!--
 <div class="register-container">
     <h2>Login To Your Account</h2>
 
@@ -44,4 +121,4 @@
     </form>
 
 
-</div>
+</div> --}}

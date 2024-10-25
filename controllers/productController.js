@@ -26,12 +26,11 @@ const createProduct = async (req, res) => {
 
     const upload = await cloudinary.uploader.upload(image)
 
+
     const imageUrl = upload.secure_url
     // const publicUrl = upload.public_id
 
-
     // you will get an public url
-
     const newProduct = await Product.create({
       productName,
       description,
@@ -54,6 +53,7 @@ const createProduct = async (req, res) => {
 
 //read 
 const getProducts = async (req, res) => {
+  // const {id} = req.userId
   const products = await Product.find().lean();
   res.render("productsPage", {
     products: products,

@@ -2,6 +2,7 @@ const express = require("express"); // importing the framework from node modules
 const bodyParser = require("body-parser");
 const xhbs = require("express-handlebars");
 const path = require("path");
+const cookieParser = require("cookie-parser")
 
 
 const { connDb } = require("./config/connectDb"); //module import
@@ -19,7 +20,11 @@ const {
   handleProductDeletion,
   getProducts,
 } = require("./controllers/productController");
+
+
 const multMid = require("./utils/multMid");
+const { isAuthenticated } = require("./utils/isAuthenticated");
+
 
 const app = express(); // inheritance
 const port = 3000; // defining port
@@ -45,18 +50,18 @@ app.engine(
 app.use(express.static(path.join(__dirname, "public"))); // serving static files
 app.use(bodyParser.urlencoded({ extended: false })); // relevant for post methods
 app.use(express.json());
+app.use(cookieParser())
 
 //guest Route
 
-app.get("/", (req, res) => {
-  res.render("index", { pageTitle: "Home | Robokids" });
-});
-app.get("/user/signUp", (req, res) => {
-  res.render("signup", { pageTitle: " Robokids | Register" });
-});
-app.get("/user/login", (req, res) => {
-  res.render("login", { pageTitle: " Robokids | Login" });
-});
+app.get("/", (req, res) => {res.render("index", { pageTitle: "Home | Robokids" });});
+app.get("/user/signUp", (req, res) => {res.render("signup", { pageTitle: " Robokids | Register" })});
+app.get("/user/login", (req, res) => {res.render("login", { pageTitle: " Robokids | Login" })});
+
+app.get("/complaints" , (req,res)=>{ res.render("complaints")})
+
+
+
 
 app.post("/user/signup", handleRegister); //user creation
 app.post("/user/login", handleLogin); // login using the same account
@@ -67,13 +72,13 @@ app.get("/user/delete/:userId", handleUserDeletion); // delete Routes used for d
 
 app.get("/product/create", (req, res) => {
   res.render("createProduct");
+
+
+
+
 }); //page render
-app.get("/products", getProducts); // render product page with products
-
-
+app.get("/products",isAuthenticated, getProducts); // render product page with products
 app.post("/product/create",multMid, createProduct);
-
-
 app.post("/product/edit/:productId", handleProductUpdation);
 app.get("/product/delete/:productId", handleProductDeletion);
 
