@@ -26,7 +26,7 @@ const registerHandler = async (req, res) => {
       });
 
       if (createUser) {
-        return res.json({ message: `user created Succesfully!` });
+        return res.json({ message: `User created Succesfully!` });
       }
     } else {
       res.json({ message: `All credentials Required` });
@@ -62,7 +62,11 @@ const loginHandler = async (req, res) => {
 
       return res
         .status(200)
-        .json({ message: "Logged in Succesfully", token: token });
+        .json({
+          message: "Logged in Succesfully",
+          token: token,
+          userId: user._id,
+        });
     } else {
       return res.status(400).json({ message: "Password Incorrect!" });
     }
@@ -170,19 +174,99 @@ const resetPassHandler = async (req, res) => {
       password: hashPass,
     });
 
-    if(updatePass){
+    if (updatePass) {
       return res.status(200).json({ message: "Password Changed Succesfully" });
+    } else {
+      return res
+        .status(500)
+        .json({ message: "Some error . Kindly try again after sometime" });
     }
-    else{
-      return res.status(500).json({ message: "Some error . Kindly try again after sometime" });
-    }
-
-
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "server error" });
   }
 };
 
-module.exports = { registerHandler, loginHandler, forgotPassHandler , resetPassHandler };
+const deleteUserHandler = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findByIdAndDelete(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "user Not found!" });
+    } else {
+      return res.status(200).json({ message: "user deleted Sucessfully!" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "server Error!" });
+  }
+};
+
+const getUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId);
+
+    if (user) {
+      res.status(200).json({ message: "user Found", payload: user });
+    } else {
+      res.status(404).json({ message: "user not Found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "server Error" });
+  }
+};
+
+const changePasshandler = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const { oldpass, newPass, confirmPass } = req.body;
+
+
+    if(oldpass === "" || newPass !== confirmPass){
+     return res.status(400).json({ message: "All credentails Required! | newPass and confirm pass doesnot match" }); 
+    }
+
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+     return res.status(400).json({ messgae: "user not found!" });
+    }
+
+    const verifyPass = await bcrypt.compare(oldpass, user.password);
+
+    if (verifyPass) {
+
+      const hashPass = await bcrypt.hash(newPass ,10)
+
+      await User.findByIdAndUpdate(userId, {
+        password: hashPass,
+      });
+
+      res.status(200).json({ message: "password changed Succesfully!" });
+    }
+    else{
+
+      res.status(400).json({ message: "Old password is incorrect!" }); 
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" }); 
+    console.log(error);
+  }
+};
+
+module.exports = {
+  registerHandler,
+  loginHandler,
+  forgotPassHandler,
+  resetPassHandler,
+  deleteUserHandler,
+  getUser,
+  changePasshandler
+};
