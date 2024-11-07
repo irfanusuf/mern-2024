@@ -3,7 +3,13 @@ import "./Navbar.css"
 import { Link } from 'react-router-dom'
 
 
-const Navbar = () => {
+const Navbar = (props) => {
+
+
+
+const username  =  props.user
+
+
   return (
     <div className='navbar'>
 
@@ -13,6 +19,13 @@ const Navbar = () => {
         <li> <Link to='/about'> About  </Link> </li>
         <li> <Link to="/contact"> Contact </Link> </li>
     </ul>
+
+
+
+    <div>
+
+      <p>  {props.user ? `Welcome ${username} ` : (<button> Login</button>) }</p>
+    </div>
 
 
 
