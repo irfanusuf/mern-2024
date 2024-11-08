@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import "./Register.css";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate()
 
   const formData = {
     username,
@@ -22,7 +24,13 @@ const Register = () => {
       const response = await axios.post(url, formData);
    
       if (response.data.message === "User created Succesfully!") {
+
         toast.success(response.data.message);
+
+        
+        navigate("/user/login")
+
+
       } else {
         toast.error(response.data.message);
       }

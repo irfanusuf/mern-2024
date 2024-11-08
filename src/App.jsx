@@ -8,50 +8,45 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Register from "./components/Register";
 import axios from "axios";
+import Login from "./components/Login";
 
 const App = () => {
   const [username, setUsername] = useState("");
-  
+  const [loggedIn , SetLoggedIn] = useState(false)
+  const userId = localStorage.getItem("userId");
 
-  const fetchData = async () => {
+  const fetchData = async (userId) => {
     try {
-      const url = "http://localhost:4000/user/getUser/67285c384e8a968dcbb1184a";
+      const url = `http://localhost:4000/user/getUser/${userId}`;
 
       const response = await axios.get(url);
 
       console.log(response);
 
-        setUsername(response.data.payload.username)
-
+      setUsername(response.data.payload.username);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-
-
- fetchData()
-
-  }, []);
-
-
+    fetchData(userId);
+  }, [userId , loggedIn]);
 
   return (
     <>
       <BrowserRouter>
-        <Navbar user ={username} />
+        <Navbar user={username} />
 
         <div className="main">
-        <Routes>
-            <Route path="/" element={<Home user = {username}/>} />
-            <Route path="/about" element={<About/>} />
-            <Route path="/contact" element={<Contact/>}/> 
-            <Route path = "/user/register" element = {<Register/>}/>
-        </Routes>
-
+          <Routes>
+            <Route path="/" element={<Home user={username} />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/user/register" element={<Register />} />
+            <Route path="/user/login" element={<Login setLoggedIn = {SetLoggedIn} />} />
+          </Routes>
         </div>
-       
 
         <Footer />
       </BrowserRouter>
