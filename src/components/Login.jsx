@@ -30,7 +30,6 @@ const Login = (props) => {
 
         localStorage.setItem("token" , response.data.token)
         localStorage.setItem("userId" , response.data.userId)
-       
         props.setLoggedIn(true)
 
         // toast.success(response.data.message);
