@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Card from "../sharedComponents/Card";
 import "./Home.css";
-import axios from "axios";
+
 
 const Home = (props) => {
   const [count, setCount] = useState(0);
@@ -21,11 +21,12 @@ const Home = (props) => {
   return (
     <div className={enableDarkMode ? "container-dark" : "container-light"}>
       welcome {props.user}
-      <Card user={props.user} />
+      <Card />
       the value of count is {count}
       <button onClick={handleIncrement}> increment </button>
+
       <button onClick={handleDarkMode}>
-        {" "}
+       
         {enableDarkMode ? "Enable Light Mode" : "Enable Dark Mode"}{" "}
       </button>
     </div>
