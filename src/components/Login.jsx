@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import "./Login.css"
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = (props) => {
 
@@ -73,6 +73,9 @@ const Login = (props) => {
               setPassword(e.target.value);
             }}
           />
+
+
+          <Link to="/user/forgotpass"> Forgot password?</Link>
 
           <button onClick={handleLogin}> Login </button>
         </form>

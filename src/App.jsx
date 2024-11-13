@@ -9,6 +9,9 @@ import Contact from "./components/Contact";
 import Register from "./components/Register";
 import axios from "axios";
 import Login from "./components/Login";
+import ForgotPass from "./components/ForgotPass";
+import NopageFound from "./components/NopageFound";
+import ResetPass from "./components/ResetPass";
 
 
 export const MyContext = createContext()
@@ -49,6 +52,9 @@ const App = () => {
 
         <div className="main">
           <Routes>
+
+
+            <Route path="*" element = {<NopageFound/>}  />
             <Route path="/" element={
               
               <MyContext.Provider value={username}>
@@ -61,6 +67,8 @@ const App = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="/user/register" element={<Register />} />
             <Route path="/user/login" element={<Login setLoggedIn = {SetLoggedIn} />} />
+            <Route path="/user/forgotpass" element={<ForgotPass/>}/> 
+            <Route path="/user/resetPass/:userId" element={<ResetPass/>} />
           </Routes>
         </div>
 
