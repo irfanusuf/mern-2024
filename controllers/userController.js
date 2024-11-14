@@ -60,13 +60,11 @@ const loginHandler = async (req, res) => {
 
       const token = await jwt.sign({ userId }, secretKey);
 
-      return res
-        .status(200)
-        .json({
-          message: "Logged in Succesfully",
-          token: token,
-          userId: user._id,
-        });
+      return res.status(200).json({
+        message: "Logged in Succesfully",
+        token: token,
+        userId: user._id,
+      });
     } else {
       return res.status(400).json({ message: "Password Incorrect!" });
     }
@@ -93,7 +91,9 @@ const forgotPassHandler = async (req, res) => {
         .json({ message: "User Not found , Kindly Register." });
     }
 
-    const passwordResetLink = `http://localhost:4000/user/password/reset/${id}`;
+    // const passwordResetLink = `http://localhost:4000/user/password/reset/${id}`;
+
+    const passwordResetLink = `http://localhost:3000/user/resetPass/${id}`;
 
     // const sendMail = await transporter.sendMail({
 
@@ -162,7 +162,11 @@ const resetPassHandler = async (req, res) => {
 
     const { newPass, confirmPass } = req.body;
 
+    console.log(req.body);
+
     const { userId } = req.params;
+
+    console.log(userId);
 
     if (newPass !== confirmPass) {
       return res.status(400).json("Password Doesnot match!");
@@ -191,12 +195,21 @@ const deleteUserHandler = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const user = await User.findByIdAndDelete(userId);
+    const { password } = req.body;
+
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ message: "user Not found!" });
-    } else {
+    }
+
+    const verifyPass = await bcrypt.compare(password, user.password);
+
+    if (verifyPass) {
+      const deleteUser = await User.findByIdAndDelete(userId);
       return res.status(200).json({ message: "user deleted Sucessfully!" });
+    } else {
+      return res.status(400).json({ message: "Password Doesnot Match" });
     }
   } catch (error) {
     console.error(error);
@@ -227,36 +240,36 @@ const changePasshandler = async (req, res) => {
 
     const { oldpass, newPass, confirmPass } = req.body;
 
-
-    if(oldpass === "" || newPass !== confirmPass){
-     return res.status(400).json({ message: "All credentails Required! | newPass and confirm pass doesnot match" }); 
+    if (oldpass === "" || newPass !== confirmPass) {
+      return res
+        .status(400)
+        .json({
+          message:
+            "All credentails Required! | newPass and confirm pass doesnot match",
+        });
     }
-
 
     const user = await User.findById(userId);
 
     if (!user) {
-     return res.status(400).json({ messgae: "user not found!" });
+      return res.status(400).json({ messgae: "user not found!" });
     }
 
     const verifyPass = await bcrypt.compare(oldpass, user.password);
 
     if (verifyPass) {
-
-      const hashPass = await bcrypt.hash(newPass ,10)
+      const hashPass = await bcrypt.hash(newPass, 10);
 
       await User.findByIdAndUpdate(userId, {
         password: hashPass,
       });
 
       res.status(200).json({ message: "password changed Succesfully!" });
-    }
-    else{
-
-      res.status(400).json({ message: "Old password is incorrect!" }); 
+    } else {
+      res.status(400).json({ message: "Old password is incorrect!" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Server Error" }); 
+    res.status(500).json({ message: "Server Error" });
     console.log(error);
   }
 };
@@ -268,5 +281,5 @@ module.exports = {
   resetPassHandler,
   deleteUserHandler,
   getUser,
-  changePasshandler
+  changePasshandler,
 };

@@ -26,16 +26,13 @@ app.get("/" , (req,res)=>{ res.json({message : "hello from the server "})})
 
 // user routes
 
-app.post("/user/register" , registerHandler)
-app.post("/user/login" , loginHandler)
-app.post("/user/forgotPass"  , forgotPassHandler)
-app.put("/user/password/reset/:userId" ,resetPassHandler)
-app.delete("/user/delete/:userId" , deleteUserHandler)
-app.put("/user/changepassword/:userId" , changePasshandler )
-
-
-
-app.get("/user/getuser/:userId" , getUser)
+app.post("/user/register" , registerHandler)    // done 
+app.post("/user/login" , loginHandler)     // done
+app.post("/user/forgotPass"  , forgotPassHandler)     // done 
+app.put("/user/password/reset/:userId" ,resetPassHandler)   // done
+app.post("/user/delete/:userId" , deleteUserHandler)    //done 
+app.put("/user/changepassword/:userId" , changePasshandler ) // done
+app.get("/user/getuser/:userId" , getUser) // done
 
 
 
