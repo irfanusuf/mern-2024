@@ -12,6 +12,7 @@ import Login from "./components/Login";
 import ForgotPass from "./components/ForgotPass";
 import NopageFound from "./components/NopageFound";
 import ResetPass from "./components/ResetPass";
+import DeleteUser from "./components/DeleteUser";
 
 
 export const MyContext = createContext()
@@ -20,6 +21,7 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [email , setEmail] =useState("")
   const [loggedIn , SetLoggedIn] = useState(false)
+
   const userId = localStorage.getItem("userId");
 
 
@@ -33,7 +35,7 @@ const App = () => {
       const response = await axios.get(url);
 
       console.log(response);
-
+      
       setUsername(response.data.payload.username);
       setEmail(response.data.payload.email)
     } catch (error) {
@@ -69,6 +71,7 @@ const App = () => {
             <Route path="/user/login" element={<Login setLoggedIn = {SetLoggedIn} />} />
             <Route path="/user/forgotpass" element={<ForgotPass/>}/> 
             <Route path="/user/resetPass/:userId" element={<ResetPass/>} />
+            <Route path="/user/delete/:userId" element={<DeleteUser/>} />
           </Routes>
         </div>
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaBars, FaInfo } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
 import { LuContact } from "react-icons/lu";
@@ -9,13 +9,15 @@ import { HiDotsVertical } from "react-icons/hi";
 const Navbar = (props) => {
   const username = props.user;
 
+  const navigate = useNavigate()
+  const userId = localStorage.getItem("userId")
+ 
   const [showsideNav, setShowSideNav] = useState(false);
 
   function handleNav() {
     setShowSideNav(!showsideNav);
   }
 
- 
   return (
     <div className="navbar">
       <ul>
@@ -39,71 +41,65 @@ const Navbar = (props) => {
         {showsideNav && (
           <ul className="animate__animated animate__bounceInLeft">
             <li>
-           
-            <span><FaHome /> <Link to="/"> Home </Link>   </span>  
+              <span>
+                <FaHome /> <Link to="/"> Home </Link>{" "}
+              </span>
             </li>
             <li>
-            
-            <span> <FaInfo /> <Link to="/about"> About </Link>   </span>  
-            </li>
-
-            <li>
-             
-             <span><LuContact /> <Link to="/contact"> Contact </Link> </span> 
+              <span>
+                {" "}
+                <FaInfo /> <Link to="/about"> About </Link>{" "}
+              </span>
             </li>
 
             <li>
-              
-             {props.user && (<span><LuContact /> <Link to="/contact"> User profile </Link> </span>)}
+              <span>
+                <LuContact /> <Link to="/contact"> Contact </Link>{" "}
+              </span>
             </li>
 
             <li>
-              
-             {props.user && (<span><LuContact /> <Link to="/contact"> Settings </Link> </span>)}
+              {props.user && (
+                <span>
+                  <LuContact /> <Link to="/contact"> User profile </Link>{" "}
+                </span>
+              )}
             </li>
 
+            <li>
+              {props.user && (
+                <span>
+                  <LuContact /> <Link to="/contact"> Settings </Link>{" "}
+                </span>
+              )}
+            </li>
 
             <li>
-              
-              {props.user && (<span><LuContact /> <Link to="/contact"> Logout </Link> </span>)}
-             </li>
- 
+              {props.user && (
+                <span>
+                  <LuContact /> <Link to="/contact"> Logout </Link>{" "}
+                </span>
+              )}
+            </li>
           </ul>
         )}
       </div>
 
       <div className="userprofile">
-        <p> {props.user ? `Welcome ${username} ` : <button> Login</button>}</p>
-
+        <p> {props.user ? `Welcome ${username} ` : <button onClick={()=>{navigate("/user/login")}}> Login</button>}</p>
 
         <div onClick={handleNav} className="dropdown">
-          
           <HiDotsVertical />
 
-
           {showsideNav && (
-
             <ul>
-
-            
-            <li> User profile</li>
-            <li>Logout</li>
-            <li> Settings </li>
-
+              <li> User profile</li>
+              <li>Logout</li>
+              <li> Settings </li>
+              <li onClick={()=>{navigate(`/user/delete/${userId}`)}} > Delete my account </li>
             </ul>
-          )
-
-
-
-
-          }
-        
-        
-        
+          )}
         </div>
-
-
-
       </div>
     </div>
   );

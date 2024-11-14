@@ -1,16 +1,15 @@
-import React, { useState } from 'react'
-import "./Login.css"
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import "./Form.css";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+import { FaLock } from "react-icons/fa";
 
 const Login = (props) => {
-
- 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
- 
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
 
   const formData = {
     email,
@@ -24,18 +23,14 @@ const Login = (props) => {
     try {
       const response = await axios.post(url, formData);
 
-      console.log(response)
-   
       if (response.data.message === "Logged in Succesfully") {
-
-        localStorage.setItem("token" , response.data.token)
-        localStorage.setItem("userId" , response.data.userId)
-        props.setLoggedIn(true)
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userId", response.data.userId);
+        props.setLoggedIn(true);
 
         // toast.success(response.data.message);
 
-        navigate("/")
-
+        navigate("/");
       } else {
         toast.error(response.data.message);
       }
@@ -45,43 +40,55 @@ const Login = (props) => {
     }
   };
 
-
-
-
-   return (
+  return (
     <>
-      <ToastContainer
-        position="top-center"
-      />
+      <ToastContainer position="top-center" />
 
-      <div className="register">
-        <form>
-        
-          <input
-            placeholder="Enter Email"
-            type="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-          <input
-            placeholder="Enter password"
-            type="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
+      <div className="container">
+        <div className="form-container">
+          <div className="lock">
+            <FaLock style={{ fontSize: "28px", color: " purple" }} />
+          </div>
+
+          <h3> Login to your Account </h3>
+
+          <form>
+            <input
+              placeholder="Enter Email"
+              type="email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
+            <input
+              placeholder="Enter password"
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
+
+            <span>
+              Forgot your password? Click on the link.
+            
+              <Link to="/user/forgotpass"> Forgot password?</Link>
+            </span>
+              
 
 
-          <Link to="/user/forgotpass"> Forgot password?</Link>
+            <button onClick={handleLogin}> Login </button>
 
-          <button onClick={handleLogin}> Login </button>
-        </form>
+              <p> Or </p>
+
+              <Link to="/user/register"> Register with Us </Link>
+          
+          </form>
+        </div>
       </div>
     </>
   );
-}
+};
 
-export default Login
+export default Login;
