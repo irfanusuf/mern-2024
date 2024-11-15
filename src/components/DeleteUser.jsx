@@ -21,7 +21,7 @@ const DeleteUser = () => {
       if (res.status === 200) {
         toast.success(res.data.message);
         localStorage.clear()
-        navigate("/")
+        navigate("/ ")
 
       } else {
         toast.error(res.data.message);

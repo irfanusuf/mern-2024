@@ -13,6 +13,7 @@ import ForgotPass from "./components/ForgotPass";
 import NopageFound from "./components/NopageFound";
 import ResetPass from "./components/ResetPass";
 import DeleteUser from "./components/DeleteUser";
+import SecureProfile from "./components/SecureProfile";
 
 
 export const MyContext = createContext()
@@ -65,13 +66,24 @@ const App = () => {
               </MyContext.Provider>
               
               } />
+
+              {/* //guest routes  */}
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/user/register" element={<Register />} />
             <Route path="/user/login" element={<Login setLoggedIn = {SetLoggedIn} />} />
             <Route path="/user/forgotpass" element={<ForgotPass/>}/> 
             <Route path="/user/resetPass/:userId" element={<ResetPass/>} />
+
+
+            {/* secure routes */}
             <Route path="/user/delete/:userId" element={<DeleteUser/>} />
+            <Route path="/user/secureprofile" element={<SecureProfile/>} />
+
+
+
+
+
           </Routes>
         </div>
 
