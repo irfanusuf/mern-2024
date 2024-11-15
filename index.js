@@ -3,6 +3,7 @@ const express = require("express")    // import express from node modules
 const cors = require("cors")
 const { registerHandler, loginHandler, forgotPassHandler, resetPassHandler, deleteUserHandler, getUser, changePasshandler } = require("./controllers/userController")   // import function from controllers
 const { connectDb } = require("./config/connectDb")
+const { isAuthorised } = require("./auth/isAuthorised")
 
 const app = express()
 
@@ -32,8 +33,12 @@ app.post("/user/forgotPass"  , forgotPassHandler)     // done
 app.put("/user/password/reset/:userId" ,resetPassHandler)   // done
 app.post("/user/delete/:userId" , deleteUserHandler)    //done 
 app.put("/user/changepassword/:userId" , changePasshandler ) // done
+
+
 app.get("/user/getuser/:userId" , getUser) // done
 
+
+app.get("/user/isAuth/:token" , isAuthorised)
 
 
 
