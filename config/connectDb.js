@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const uri = "mongodb+srv://irfanusuf33:robolox@robolox.xnj0z.mongodb.net/Robo?retryWrites=true&w=majority&appName=robolox";
+require('dotenv').config()
+
+const uri = process.env.MONGO_URI;
 
 const connectDb = async () => {
   try {

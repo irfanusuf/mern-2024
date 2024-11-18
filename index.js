@@ -4,8 +4,9 @@ const cors = require("cors")
 const { registerHandler, loginHandler, forgotPassHandler, resetPassHandler, deleteUserHandler, getUser, changePasshandler } = require("./controllers/userController")   // import function from controllers
 const { connectDb } = require("./config/connectDb")
 const { isAuthorised } = require("./auth/isAuthorised")
-
+require('dotenv').config()
 const app = express()
+const PORT = process.env.PORT
 
 
 connectDb()
@@ -46,4 +47,4 @@ app.get("/user/isAuth/:token" , isAuthorised)
 
 
 
-app.listen(4000 , ()=>{console.log("server listening on port 4000")})
+app.listen(PORT , ()=>{console.log(`server listening on port ${PORT}`)})

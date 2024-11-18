@@ -1,10 +1,11 @@
 const { messageHandler } = require("../utils/messageHandler");
 const jwt = require("jsonwebtoken");
+require('dotenv').config()
 
 const isAuthorised = async (req, res) => {
   try {
     const { token } = req.params;
-    const secretKey = "randomwordactsassignature";
+    const secretKey = process.env.SECRET_KEY;
 
     if (!token) {
       return messageHandler(res, 403, "No token Detected | Forbidden");

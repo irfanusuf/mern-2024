@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+require('dotenv').config()
 
 let transporter = nodemailer.createTransport({
   host: "smtpout.secureserver.net",
@@ -7,7 +8,7 @@ let transporter = nodemailer.createTransport({
 
   auth: {
     user: "services@stylehouse.world",
-    pass: "Ester327811@",
+    pass: process.env.MAILER_PASS,
   },
 });
 

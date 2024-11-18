@@ -2,6 +2,7 @@ const { User } = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { transporter } = require("../utils/nodemailer");
+require('dotenv').config()
 
 const registerHandler = async (req, res) => {
   try {
@@ -56,7 +57,7 @@ const loginHandler = async (req, res) => {
 
     if (passverify) {
       const userId = user._id;
-      const secretKey = "randomwordactsassignature";
+      const secretKey = process.env.SECRET_KEY
 
       const token = await jwt.sign({ userId }, secretKey);
 
