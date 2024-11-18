@@ -7,7 +7,6 @@ const IsAuthorised = () => {
   const navigate = useNavigate();
 
   
-
 //   const verifyToken = async (token) => {
   //  const url = `http://localhost:4000/user/isAuth`;
 //     const res = await axios.post(url, token);
@@ -18,9 +17,11 @@ const IsAuthorised = () => {
 //     }
 //   };
 
-
   const verifyToken = async (token) => {
-    const url = `http://localhost:4000/user/isAuth/${token}`;
+    // const baseUrl ="https://robolox.onrender.com"
+    const baseUrl = "http:localhost/4000"
+
+    const url = `${baseUrl}/user/isAuth/${token}`;
     const res = await axios.get(url);
     if (res.status === 200 && res.data.message === "Token verified") {
       navigate("/user/secureprofile");
