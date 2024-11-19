@@ -1,6 +1,6 @@
-import React, {useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import "./global.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Footer from "./components/Footer";
@@ -13,56 +13,38 @@ import NopageFound from "./components/NopageFound";
 import ResetPass from "./components/ResetPass";
 import DeleteUser from "./components/DeleteUser";
 import SecureProfile from "./components/SecureProfile";
-import { Context } from "./context/Actions";
-
+import { Context } from "./context/Store";
 
 const App = () => {
+  const { fetchData, loading } = useContext(Context);
+  // const userId = localStorage.getItem("userId")
 
-
- const {fetchData , loading , userId} = useContext(Context)
-
- 
   useEffect(() => {
-    if(!loading){
-      fetchData(userId);
-    }
-  }, [userId , loading ]);
+    
+      fetchData();
+    
+  }, [loading ]);
 
   return (
     <>
-    
-      <BrowserRouter>
-        <Navbar  />
-
-        <div className="main">
-          <Routes>
-
-
-            <Route path="*" element = {<NopageFound/>}  />
-            <Route path="/" element={<Home/>} />
-
-              {/* //guest routes  */}
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/user/register" element={<Register />} />
-            <Route path="/user/login" element={<Login />} />
-            <Route path="/user/forgotpass" element={<ForgotPass/>}/> 
-            <Route path="/user/resetPass/:userId" element={<ResetPass/>} />
-
-
-            {/* secure routes */}
-            <Route path="/user/delete/:userId" element={<DeleteUser/>} />
-            <Route path="/user/secureprofile" element={<SecureProfile/>} />
-
-
-
-
-
-          </Routes>
-        </div>
-
-        <Footer />
-      </BrowserRouter>
+      <Navbar />
+      <div className="main">
+        <Routes>
+          <Route path="*" element={<NopageFound />} />
+          <Route path="/" element={<Home />} />
+          {/* //guest routes  */}
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/user/register" element={<Register />} />
+          <Route path="/user/login" element={<Login />} />
+          <Route path="/user/forgotpass" element={<ForgotPass />} />
+          <Route path="/user/resetPass/:userId" element={<ResetPass />} />
+          {/* secure routes */}
+          <Route path="/user/delete/:userId" element={<DeleteUser />} />
+          <Route path="/user/secureprofile" element={<SecureProfile />} />
+        </Routes>
+      </div>
+      <Footer />
     </>
   );
 };

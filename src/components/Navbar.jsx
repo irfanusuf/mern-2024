@@ -5,19 +5,14 @@ import { FaBars, FaInfo } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
 import { LuContact } from "react-icons/lu";
 import { HiDotsVertical } from "react-icons/hi";
-import { Context } from "../context/Actions";
+import { Context } from "../context/Store";
 
 const Navbar = () => {
-
-
-  const {username }  = useContext(Context)
-
-  const navigate = useNavigate()
-
-  const userId = localStorage.getItem("userId")
- 
+  const { username } = useContext(Context);
+  const navigate = useNavigate();
+  const userId = localStorage.getItem("userId");
   const [showsideNav, setShowSideNav] = useState(false);
-
+  
   function handleNav() {
     setShowSideNav(!showsideNav);
   }
@@ -90,7 +85,21 @@ const Navbar = () => {
       </div>
 
       <div className="userprofile">
-        <p> {username ? `Welcome ${username} ` : <button onClick={()=>{navigate("/user/login")}}> Login</button>}</p>
+        <p>
+          {" "}
+          {username ? (
+            `Welcome ${username} `
+          ) : (
+            <button
+              onClick={() => {
+                navigate("/user/login");
+              }}
+            >
+              {" "}
+              Login
+            </button>
+          )}
+        </p>
 
         <div onClick={handleNav} className="dropdown">
           <HiDotsVertical />
@@ -100,7 +109,14 @@ const Navbar = () => {
               <li> User profile</li>
               <li>Logout</li>
               <li> Settings </li>
-              <li onClick={()=>{navigate(`/user/delete/${userId}`)}} > Delete my account </li>
+              <li
+                onClick={() => {
+                  navigate(`/user/delete/${userId}`);
+                }}
+              >
+                {" "}
+                Delete my account{" "}
+              </li>
             </ul>
           )}
         </div>

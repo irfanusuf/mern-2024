@@ -3,7 +3,7 @@ import "./Form.css";
 import { ToastContainer } from "react-toastify";
 import { Link} from "react-router-dom";
 import { FaLock } from "react-icons/fa";
-import { Context } from "../context/Actions";
+import { Context } from "../context/Store";
 
 const Register = () => {
   const {handleRegister} = useContext(Context)
