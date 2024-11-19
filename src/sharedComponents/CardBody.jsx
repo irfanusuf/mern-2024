@@ -1,17 +1,17 @@
-import React, { useContext } from 'react'
-import { MyContext } from '../App'
+import React from 'react'
+
 
 const CardBody = () => {
 
 
-const user = useContext(MyContext)
+
 
   return (
     <div>
 
 
     
-            {user}
+         
 
     </div>
   )

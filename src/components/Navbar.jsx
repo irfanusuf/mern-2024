@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBars, FaInfo } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
 import { LuContact } from "react-icons/lu";
 import { HiDotsVertical } from "react-icons/hi";
+import { Context } from "../context/Actions";
 
-const Navbar = (props) => {
-  const username = props.user;
+const Navbar = () => {
+
+
+  const {username }  = useContext(Context)
 
   const navigate = useNavigate()
+
   const userId = localStorage.getItem("userId")
  
   const [showsideNav, setShowSideNav] = useState(false);
@@ -59,7 +63,7 @@ const Navbar = (props) => {
             </li>
 
             <li>
-              {props.user && (
+              {username && (
                 <span>
                   <LuContact /> <Link to="/contact"> User profile </Link>{" "}
                 </span>
@@ -67,7 +71,7 @@ const Navbar = (props) => {
             </li>
 
             <li>
-              {props.user && (
+              {username && (
                 <span>
                   <LuContact /> <Link to="/contact"> Settings </Link>{" "}
                 </span>
@@ -75,7 +79,7 @@ const Navbar = (props) => {
             </li>
 
             <li>
-              {props.user && (
+              {username && (
                 <span>
                   <LuContact /> <Link to="/contact"> Logout </Link>{" "}
                 </span>
@@ -86,7 +90,7 @@ const Navbar = (props) => {
       </div>
 
       <div className="userprofile">
-        <p> {props.user ? `Welcome ${username} ` : <button onClick={()=>{navigate("/user/login")}}> Login</button>}</p>
+        <p> {username ? `Welcome ${username} ` : <button onClick={()=>{navigate("/user/login")}}> Login</button>}</p>
 
         <div onClick={handleNav} className="dropdown">
           <HiDotsVertical />

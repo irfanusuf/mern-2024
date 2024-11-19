@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Form.css";
-import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { Link} from "react-router-dom";
 import { FaLock } from "react-icons/fa";
+import { Context } from "../context/Actions";
 
 const Register = () => {
+  const {handleRegister} = useContext(Context)
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+ 
 
   const formData = {
     username,
@@ -17,25 +18,7 @@ const Register = () => {
     password,
   };
 
-  const url = "http://localhost:4000/user/register";
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(url, formData);
-
-      if (response.data.message === "User created Succesfully!") {
-        toast.success(response.data.message);
-
-        navigate("/user/login");
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Server Error. Try again After Sometime!");
-    }
-  };
 
   return (
     <>
@@ -83,7 +66,7 @@ const Register = () => {
               <Link to="/user/login"> Login </Link>
             </span>
 
-            <button onClick={handleRegister}> Register </button>
+            <button onClick={(e)=>{handleRegister(e ,formData)}}> Register </button>
           
             <p>Notice: Read <Link> User Agreement and privacy policy</Link> before registering with us </p>
 

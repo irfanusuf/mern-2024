@@ -1,45 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Form.css";
-import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import {  ToastContainer } from "react-toastify";
+import { Link } from "react-router-dom";
 import { FaLock } from "react-icons/fa";
+import { Context } from "../context/Actions";
 
-const Login = (props) => {
+const Login = () => {
+
+  const {handleLogin} = useContext(Context)
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const navigate = useNavigate();
 
   const formData = {
     email,
     password,
   };
 
-  const url = "http://localhost:4000/user/login";
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(url, formData);
-
-      if (response.data.message === "Logged in Succesfully") {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userId", response.data.userId);
-        props.setLoggedIn(true);
-
-        // toast.success(response.data.message);
-
-        navigate("/");
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Server Error. Try again After Sometime!");
-    }
-  };
-
+  
   return (
     <>
       <ToastContainer position="top-center" />
@@ -78,7 +56,7 @@ const Login = (props) => {
               
 
 
-            <button onClick={handleLogin}> Login </button>
+            <button onClick={(e)=>{handleLogin(e , formData)}}> Login </button>
 
               <p> Or </p>
 
