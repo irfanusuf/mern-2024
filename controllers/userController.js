@@ -47,7 +47,6 @@ const loginHandler = async (req, res) => {
 
     const user = await User.findOne({ email });
 
-    console.log(user);
 
     if (!user) {
       return res.status(400).json({ message: "User Not Found!" });
@@ -128,8 +127,6 @@ const forgotPassHandler = async (req, res) => {
           return res.status(500).json({ message: "Server Error" });
         }
 
-        console.log(resolve);
-
         return res.status(200).json({
           message: "Password Rest link sent to your mail Succesfully",
         });
@@ -163,11 +160,7 @@ const resetPassHandler = async (req, res) => {
 
     const { newPass, confirmPass } = req.body;
 
-    console.log(req.body);
-
     const { userId } = req.params;
-
-    console.log(userId);
 
     if (newPass !== confirmPass) {
       return res.status(400).json("Password Doesnot match!");
@@ -220,7 +213,7 @@ const deleteUserHandler = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const  userId  = req.userId;
 
     const user = await User.findById(userId);
 
