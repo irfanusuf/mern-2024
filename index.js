@@ -5,7 +5,6 @@ const { registerHandler, loginHandler, forgotPassHandler, resetPassHandler, dele
 const { connectDb } = require("./config/connectDb")
 const { isAuthorised } = require("./auth/isAuthorised")
 const { isAuthenticated } = require("./auth/isAuthenticated")
-const { sellerRegisterHandler } = require("./controllers/sellerController")
 require('dotenv').config()
 const app = express()
 const PORT = process.env.PORT
@@ -47,7 +46,7 @@ app.get("/user/getuser/:userId" ,isAuthenticated, getUser) // done
 
 // seller Routes
 
-app.post("/seller/register" , sellerRegisterHandler)    // done 
+
 
 
 app.listen(PORT , ()=>{console.log(`server listening on port ${PORT}`)})
