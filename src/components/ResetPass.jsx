@@ -1,11 +1,14 @@
-import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./Form.css";
 import { FaLock } from "react-icons/fa";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import { Context } from "../context/Store";
 
 const ResetPass = () => {
+
+const  {handleResetPass} = useContext(Context)
+
   const [formData, setFormData] = useState({ newPass: "", confirmPass: "" });
 
   const { userId } = useParams();
@@ -13,25 +16,6 @@ const ResetPass = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevInput) => ({ ...prevInput, [name]: value }));
-  };
-
-  const url = `http://localhost:4000/user/password/reset/${userId}`;
-
-  const handleChangePass = async (e) => {
-    try {
-      e.preventDefault();
-      const res = await axios.put(url, formData);
-      if (res.status === 200) {
-        toast.success(res.data.message);
-      }
-    } catch (error) {
-      console.error(error);
-      if (error.response.status === 500) {
-        toast.error("Server Error");
-      }else if(error.response.status === 400){
-        toast.error("Bad Request");
-      }
-    }
   };
 
   return (
@@ -72,7 +56,7 @@ const ResetPass = () => {
               the password
             </p>
 
-            <button onClick={handleChangePass}> Change Password </button>
+            <button onClick={(e)=>{handleResetPass(e , userId ,formData)}}> Change Password </button>
           </form>
         </div>
       </div>

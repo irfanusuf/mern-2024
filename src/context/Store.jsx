@@ -1,31 +1,24 @@
-import axios from "axios";
-import React, { createContext, useState } from "react";
+
+import React, { createContext, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import App from "../App";
+import api from "../utils/Axiosinstance";
 
-
-export const Context = createContext()
-
+export const Context = createContext();
 
 const Store = () => {
-  const baseUrl = "https://robolox.onrender.com";
-
-  const navigate = useNavigate()
-  const userId = localStorage.getItem("userId")
-
+  const navigate = useNavigate();
   const [store, setStore] = useState({
     loading: false,
     username: "",
     email: "",
   });
 
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
-      const url = `${baseUrl}/user/getUser/${userId}`;
-
-      const response = await axios.get(url);
+      
+      const response = await api.get("/user/getUser");
 
       setStore((prev) => ({
         ...prev,
@@ -35,18 +28,16 @@ const Store = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
-  const handleRegister = async (e , formData) => {
+  const handleRegister = async (e, formData) => {
     e.preventDefault();
-    const url = `${baseUrl}/user/register`
+
     try {
-      const response = await axios.post(url, formData);
+      const response = await api.post("/user/register", formData);
 
       if (response.data.message === "User created Succesfully!") {
         toast.success(response.data.message);
-
-       
       } else {
         toast.error(response.data.message);
       }
@@ -59,17 +50,16 @@ const Store = () => {
   const handleLogin = async (e, formData) => {
     e.preventDefault();
     try {
-      const url = `${baseUrl}/user/login`;
+     
       setStore((prev) => ({ ...prev, loading: true }));
-      const response = await axios.post(url, formData);
+      const response = await api.post("/user/login", formData);
 
       if (response.data.message === "Logged in Succesfully") {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userId", response.data.userId);
-
+        // localStorage.setItem("token", response.data.token);
+        // localStorage.setItem("userId", response.data.userId);
         // toast.success(response.data.message);
 
-       navigate("/")
+        navigate("/");
       } else {
         toast.error(response.data.message);
       }
@@ -81,19 +71,72 @@ const Store = () => {
     }
   };
 
+  const handleForgotPass = async (e, email) => {
+    e.preventDefault();
+   
+    try {
+      const res = await api.post("/user/forgotPass"  ,{ email: email });
 
+      if (res.status === 200) {
+        toast.success(res.data.message);
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-
- 
-
- return(
-    <Context.Provider value={{...store ,handleLogin , fetchData , handleRegister}} >
-             <App/>
-    </Context.Provider>
+  const handleResetPass = async (e, userId, formData) => {
+    e.preventDefault();
   
- )
+    try {
+      const res = await api.put(`/user/password/reset/${userId}`, formData);
+      if (res.status === 200) {
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      if (error.response.status === 500) {
+        toast.error("Server Error");
+      } else if (error.response.status === 400) {
+        toast.error("Bad Request");
+      }
+    }
+  };
 
+  const handleDeleteUser = async (e, password) => {
+    e.preventDefault();
+   
+    try {
+      const res = await api.post("/user/delete", { password: password });
 
+      if (res.status === 200) {
+        toast.success(res.data.message);
+        navigate("/");
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <Context.Provider
+      value={{
+        ...store,
+        handleRegister,
+        handleLogin,
+        fetchData,
+        handleForgotPass,
+        handleResetPass,
+        handleDeleteUser,
+      }}
+    >
+      <App />
+    </Context.Provider>
+  );
 };
 
 export default Store;

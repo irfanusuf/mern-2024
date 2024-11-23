@@ -11,6 +11,8 @@ const Navbar = () => {
   const { username } = useContext(Context);
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
+
+
   const [showsideNav, setShowSideNav] = useState(false);
   
   function handleNav() {
@@ -84,6 +86,12 @@ const Navbar = () => {
         )}
       </div>
 
+
+
+
+
+
+
       <div className="userprofile">
         <p>
           {" "}
@@ -114,8 +122,8 @@ const Navbar = () => {
                   navigate(`/user/delete/${userId}`);
                 }}
               >
-                {" "}
-                Delete my account{" "}
+                
+                Delete my account
               </li>
             </ul>
           )}

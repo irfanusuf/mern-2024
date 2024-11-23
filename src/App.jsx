@@ -17,13 +17,13 @@ import { Context } from "./context/Store";
 
 const App = () => {
   const { fetchData, loading } = useContext(Context);
-  // const userId = localStorage.getItem("userId")
+
 
   useEffect(() => {
-    
+   
       fetchData();
-    
-  }, [loading ]);
+   
+  }, [loading,fetchData]);
 
   return (
     <>
