@@ -1,41 +1,38 @@
 const mongoose = require("mongoose");
 
-
 const userSchema = new mongoose.Schema({
-  username: { type: String },
+  username: { type: String, required: true },
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   isActive: { type: Boolean, default: false },
   profilepicUrl: { type: String },
-  orders: [
-    { order_id: { type: mongoose.Schema.Types.ObjectId, ref: "Order" } },
-  ],
+  bio: { type: String },
+  location: { latitude: String, longitude: String },
+  mobile: { type: String },
+  experience: { type: String },
+  specialization: { type: String },
   role: {
     type: String,
     enum: ["admin", "customer", "service provider"],
     default: "customer",
   },
+
+  orders: [{ order: { type: mongoose.Schema.Types.ObjectId, ref: "Order" }}],
+  services: [{ service: { type: mongoose.Schema.Types.ObjectId, ref: "Service" }}],
+  
   reviews: [
     {
-      userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-      starRating: { type: Number, min: 1, max: 5 },
-      review: { type: String },
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      starRating: { type: Number, required: true, min: 1, max: 5 },
+      review: { type: String, required: true },
     },
   ],
-  serviceCategory: String,
-  bio: String,
-  location: { latitude: String, longitudes: String },
-  mobile: String,
-  experience: String,
-  specialization: String,
+ 
+
   createdOn: { type: Date, default: Date.now() },
   updatedOn: { type: Date, default: Date.now() },
 });
 
-
-
-
-
-const User = mongoose.model("User" , userSchema)
+const User = mongoose.model("User", userSchema);
 
 module.exports = { User };

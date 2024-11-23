@@ -58,13 +58,22 @@ const loginHandler = async (req, res) => {
       const userId = user._id;
       const secretKey = process.env.SECRET_KEY
 
-      const token = await jwt.sign({ userId }, secretKey);
+      const token = jwt.sign({ userId }, secretKey);
 
+      if(token){
+        res.cookie("token" ,token , {
+          maxAge :  1000*60*60*24*30    ,     // one month in miiliseconds
+          httpOnly : true,
+          secure : true,
+          sameSite: "None"
+        } )
+      }
+  
       return res.status(200).json({
         message: "Logged in Succesfully",
-        token: token,
-        userId: user._id,
       });
+
+
     } else {
       return res.status(400).json({ message: "Password Incorrect!" });
     }
@@ -187,7 +196,7 @@ const resetPassHandler = async (req, res) => {
 
 const deleteUserHandler = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.userId;
 
     const { password } = req.body;
 
@@ -230,7 +239,7 @@ const getUser = async (req, res) => {
 
 const changePasshandler = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.userId;
 
     const { oldpass, newPass, confirmPass } = req.body;
 

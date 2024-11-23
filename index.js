@@ -1,6 +1,8 @@
 
 const express = require("express")    // import express from node modules
 const cors = require("cors")
+const cookieParser = require("cookie-parser")
+const bodyParser = require("body-parser")
 const { registerHandler, loginHandler, forgotPassHandler, resetPassHandler, deleteUserHandler, getUser, changePasshandler } = require("./controllers/userController")   // import function from controllers
 const { connectDb } = require("./config/connectDb")
 const { isAuthorised } = require("./auth/isAuthorised")
@@ -17,15 +19,19 @@ connectDb()
 //middle wares
 
 app.use(express.json())
-app.use(cors())
-
+// app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded())
+app.use(cors({
+    origin : true,
+    credentials : true
+}))
+app.use(cookieParser())
 
 
 
 
 // routes 
 app.get("/" , (req,res)=>{ res.json({message : "hello from the server "})})  
-
 
 
 app.get("/user/isAuth/:token" , isAuthorised)
@@ -38,9 +44,9 @@ app.post("/user/forgotPass"  , forgotPassHandler)     // done
 app.put("/user/password/reset/:userId" ,resetPassHandler)   // done
 
 // secure user Routes
-app.post("/user/delete/:userId" ,isAuthenticated, deleteUserHandler)    //done 
-app.put("/user/changepassword/:userId" ,isAuthenticated, changePasshandler ) // done
-app.get("/user/getuser/:userId" ,isAuthenticated, getUser) // done
+app.post("/user/delete" ,isAuthenticated, deleteUserHandler)    //done 
+app.put("/user/changepassword" ,isAuthenticated, changePasshandler ) // done
+app.get("/user/getuser" ,isAuthenticated, getUser) // done
 
 
 

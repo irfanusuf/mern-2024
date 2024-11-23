@@ -2,20 +2,23 @@ const mongoose = require("mongoose");
 
 const serviceSchema = new mongoose.Schema({
   serviceTitle: {type : String},
-  serviceProvider: { type: Number, require: true },
-  serviceCost: { type: String, enum: ["cashThroughAgent", "card", "onilne"] },
-  isActive: { type: String, enum: ["Completed", "pending"] },
-  reviews: [
-    {
-      userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-      starRating: { type: Number, min: 1, max: 5 },
-      review: { type: String },
-    },
-  ],
+  serviceProvider: {type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  serviceCost: { type: Number },
+  isActive: { type: Boolean},
   discount : {type :Number},
   timeOfCompletion : {type : String},
   region : String,
   category : String,
+
+
+  reviews: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      starRating: { type: Number, required: true, min: 1, max: 5 },
+      review: { type: String, required: true },
+    },
+  ],
+
   createdOn: { type: Date, default: Date.now() },
   updatedOn: { type: Date, default: Date.now() },
 });
