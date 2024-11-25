@@ -4,12 +4,12 @@ const serviceSchema = new mongoose.Schema({
   serviceTitle: {type : String},
   serviceProvider: {type: mongoose.Schema.Types.ObjectId, ref: "User" },
   serviceCost: { type: Number },
-  isActive: { type: Boolean},
+  picUrls : {type :String},
+  isActive: { type: Boolean , default :false},
   discount : {type :Number},
   timeOfCompletion : {type : String},
   region : String,
   category : String,
-
 
   reviews: [
     {

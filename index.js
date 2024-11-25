@@ -7,6 +7,7 @@ const { registerHandler, loginHandler, forgotPassHandler, resetPassHandler, dele
 const { connectDb } = require("./config/connectDb")
 const { isAuthorised } = require("./auth/isAuthorised")
 const { isAuthenticated } = require("./auth/isAuthenticated")
+const { createService, getAllservices } = require("./controllers/serviceControllers")
 require('dotenv').config()
 const app = express()
 const PORT = process.env.PORT
@@ -26,7 +27,6 @@ app.use(cors({
     credentials : true
 }))
 app.use(cookieParser())
-
 
 
 
@@ -50,9 +50,10 @@ app.get("/user/getuser" ,isAuthenticated, getUser) // done
 
 
 
-// seller Routes
+// service Routes
 
-
+app.post("/seller/create/service" , isAuthenticated ,createService)
+app.get("/services/all" , isAuthenticated , getAllservices)
 
 
 app.listen(PORT , ()=>{console.log(`server listening on port ${PORT}`)})
