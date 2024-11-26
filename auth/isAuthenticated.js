@@ -5,8 +5,8 @@ require('dotenv').config()
 
 const isAuthenticated = async (req, res , next) => {
   try {
-    const { token } = req.cookies;
-    // const {token} = req.query
+    // const { token } = req.cookies;
+    const {token} = req.query
     const secretKey = process.env.SECRET_KEY;
 
     if (!token) {

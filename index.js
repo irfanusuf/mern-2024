@@ -7,7 +7,7 @@ const { registerHandler, loginHandler, forgotPassHandler, resetPassHandler, dele
 const { connectDb } = require("./config/connectDb")
 const { isAuthorised } = require("./auth/isAuthorised")
 const { isAuthenticated } = require("./auth/isAuthenticated")
-const { createService, getAllservices } = require("./controllers/serviceControllers")
+const { createService, getAllservices, getServiceById, editServiceById } = require("./controllers/serviceControllers")
 require('dotenv').config()
 const app = express()
 const PORT = process.env.PORT
@@ -54,6 +54,8 @@ app.get("/user/getuser" ,isAuthenticated, getUser) // done
 
 app.post("/seller/create/service" , isAuthenticated ,createService)
 app.get("/services/all" , isAuthenticated , getAllservices)
+app.get("/service" , isAuthenticated , getServiceById)
+app.put("/seller/edit/service" , isAuthenticated , editServiceById )
 
 
 app.listen(PORT , ()=>{console.log(`server listening on port ${PORT}`)})
