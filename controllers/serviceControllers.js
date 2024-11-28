@@ -124,29 +124,35 @@ const editServiceById = async (req, res) => {
     } = req.body;
 
     if (
-      !serviceTitle || !serviceCost || !discount || !timeOfCompletion || !region ||!category) {
+      !serviceTitle ||
+      !serviceCost ||
+      !discount ||
+      !timeOfCompletion ||
+      !region ||
+      !category
+    ) {
       return messageHandler(res, 400, "All details of service Required");
     }
 
-    // service.serviceTitle = serviceTitle;
-    // service.serviceCost = serviceCost;
-    // service.discount = discount;
-    // service.timeOfCompletion = timeOfCompletion;
-    // service.region = region;
-    // service.category = category;
+    service.serviceTitle = serviceTitle;
+    service.serviceCost = serviceCost;
+    service.discount = discount;
+    service.timeOfCompletion = timeOfCompletion;
+    service.region = region;
+    service.category = category;
 
-    // const updateService = await service.save();
+    const updateService = await service.save();
 
-    await Service.findByIdAndUpdate(serviceId, {
-      serviceTitle,
-      serviceCost,
-      discount,
-      timeOfCompletion,
-      region,
-      category,
-    });
+    // await Service.findByIdAndUpdate(serviceId, {
+    //   serviceTitle,
+    //   serviceCost,
+    //   discount,
+    //   timeOfCompletion,
+    //   region,
+    //   category,
+    // });
 
-    const updateService = await Service.findById(serviceId);
+    // const updateService = await Service.findById(serviceId);
 
     if (updateService) {
       return messageHandler(res, 200, "Updated Succesfully!", updateService);
@@ -159,6 +165,31 @@ const editServiceById = async (req, res) => {
 
 const delServicebyId = async (req, res) => {
   try {
+    const { serviceId } = req.query;
+    const userId = req.userId;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return messageHandler(res, 404, "User Not found");
+    }
+
+    const service = await Service.findByIdAndDelete(serviceId);
+
+    if (!service) {
+      return messageHandler(res, 200, "Service Cant be deleted some Error");
+    }
+
+    const findIndex = user.services.findIndex(
+      (element) => element._id.toString() === serviceId
+    );
+
+    const deleteFromUserServiceArr = user.services.splice(findIndex, 1);
+
+    if (deleteFromUserServiceArr) {
+      await user.save();
+      messageHandler(res, 200, "Service Deleted Succesfully");
+    }
   } catch (error) {
     console.log(error);
     return messageHandler(res, 500, "server Error");
