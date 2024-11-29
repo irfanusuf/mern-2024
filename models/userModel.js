@@ -17,8 +17,8 @@ const userSchema = new mongoose.Schema({
     default: "customer",
   },
 
-  orders: [{ order: { type: mongoose.Schema.Types.ObjectId, ref: "Order" }}],
-  services: [{ service: { type: mongoose.Schema.Types.ObjectId, ref: "Service" }}],
+  orders: [{type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
+  services: [{ type: mongoose.Schema.Types.ObjectId, ref: "Service" }],
   
   reviews: [
     {

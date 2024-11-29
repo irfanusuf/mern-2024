@@ -67,9 +67,11 @@ const getAllservices = async (req, res) => {
   try {
     const services = await Service.find();
 
-    if (services) {
-      return messageHandler(res, 200, "All services", services);
+    if (services.length === 0) {
+      return messageHandler(res, 404, "No Services Found!", );
     }
+
+    return messageHandler(res, 200, "All services", services);
   } catch (error) {
     console.log(error);
     messageHandler(res, 500, "Server Error");
@@ -171,24 +173,31 @@ const delServicebyId = async (req, res) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return messageHandler(res, 404, "User Not found");
+      return messageHandler(res, 404, "User Not found!");
     }
 
-    const service = await Service.findByIdAndDelete(serviceId);
+    const service = await Service.findById(serviceId);
 
     if (!service) {
-      return messageHandler(res, 200, "Service Cant be deleted some Error");
+      return messageHandler(res, 200, "Service Not Found!");
     }
 
     const findIndex = user.services.findIndex(
       (element) => element._id.toString() === serviceId
     );
 
-    const deleteFromUserServiceArr = user.services.splice(findIndex, 1);
+    
+    console.log(findIndex)
 
-    if (deleteFromUserServiceArr) {
+
+    if (findIndex > -1 && user.role === "service provider") {
+      await Service.deleteOne({_id : serviceId})
+      user.services.splice(findIndex, 1);
       await user.save();
       messageHandler(res, 200, "Service Deleted Succesfully");
+    }
+    else{
+      messageHandler(res, 403 , "UnAuthorized to delete")
     }
   } catch (error) {
     console.log(error);

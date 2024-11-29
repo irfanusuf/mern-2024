@@ -7,7 +7,7 @@ const serviceSchema = new mongoose.Schema({
   picUrls : {type :String},
   isActive: { type: Boolean , default :false},
   discount : {type :Number},
-  timeOfCompletion : {type : String},
+  timeOfCompletion : {type : String}, 
   region : String,
   category : String,
 

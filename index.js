@@ -21,7 +21,8 @@ const {
   editServiceById,
   delServicebyId,
 } = require("./controllers/serviceControllers");
-const { createOrder, cancelOrder, getorderById } = require("./controllers/orderControllers");
+const { createOrder, cancelOrder, getorderById, getAllOrders } = require("./controllers/orderControllers");
+const { createPaymentIntent } = require("./controllers/paymentController");
 require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT;
@@ -72,7 +73,20 @@ app.delete("/seller/delete/service", isAuthenticated, delServicebyId);
 
 app.post("/customer/create/order", isAuthenticated, createOrder);
 app.put("/customer/cancel/order", isAuthenticated, cancelOrder);
+app.get("/customer/fetch/orders" ,isAuthenticated , getAllOrders )
 app.get("/customer/fetch/order" ,isAuthenticated , getorderById )
+
+
+
+
+// payment routes
+
+app.post("/customer/pay/order", isAuthenticated, createPaymentIntent);
+
+
+
+
+
 
 app.listen(PORT, () => {
   console.log(`server listening on port ${PORT}`);

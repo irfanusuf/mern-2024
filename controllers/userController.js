@@ -224,12 +224,9 @@ const getUser = async (req, res) => {
   try {
     const  userId  = req.userId;
 
-    const user = await User.findById(userId).populate({
-      path : "orders",
+    const user = await User.findById(userId)
+    // .populate({path :"orders"})
 
-
-
-    });
 
     if (user) {
       res.status(200).json({ message: "user Found", payload: user });

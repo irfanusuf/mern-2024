@@ -1,11 +1,14 @@
 const mongoose = require("mongoose");
 
-const paymentSchema = new mongoose.Schema({
+const paymentSchema = new mongoose.Schema({ 
   order: { type: mongoose.Schema.Types.ObjectId, ref: "Order"  },
   paymentAmount: { type: Number, require: true },
-  paymentStatus: { type: String, enum: ["completed", "pending" , "refunded"] },
+  paymentMode: { type: String, enum: ["cashThroughAgent", "card", "onilne"] },
+  paymentStatus: { type: String, enum: ["completed", "pending" , "refunded"] , default : "pending" },
+
   payer: { type: mongoose.Schema.Types.ObjectId, ref: "User"  },
   reciever: { type: mongoose.Schema.Types.ObjectId, ref: "User"  },
+
   paymentOn: { type: Date, default: Date.now() },
   updatedOn: { type: Date, default: Date.now() },
 });
