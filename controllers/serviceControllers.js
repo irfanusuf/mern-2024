@@ -1,5 +1,6 @@
 const { Service } = require("../models/serviceModel");
 const { User } = require("../models/userModel");
+const { uploadTocloud } = require("../utils/cloudinary");
 const { messageHandler } = require("../utils/messageHandler");
 
 const createService = async (req, res) => {
@@ -63,12 +64,46 @@ const createService = async (req, res) => {
   }
 };
 
+const UploadServicePic = async (req, res) => {
+  try {
+    const { serviceId } = req.query;
+    const service = await Service.findById(serviceId);
+    const user = await User.findById(req.userId);
+
+    if (!service) {
+     return messageHandler(res, 404, "Service not Found");
+    }
+    if (!user) {
+     return messageHandler(res, 404, "User not Found");
+    }
+
+    if (
+      user.role === "service provider" &&
+      service.serviceProvider._id.toString() === req.userId
+    ) {
+      const imagePath = req.file.path;
+      const upload = await uploadTocloud(imagePath);
+
+      service.picUrls = upload.secure_url;
+
+      await service.save();
+
+     return messageHandler(res, 200, "upload Sucess full", upload);
+    } else {
+     return messageHandler(res, 403, "Some Error , kindly try again after Sometime!");
+    }
+  } catch (error) {
+    console.error(error);
+    messageHandler(res, 500, "server Error");
+  }
+};
+
 const getAllservices = async (req, res) => {
   try {
     const services = await Service.find();
 
     if (services.length === 0) {
-      return messageHandler(res, 404, "No Services Found!", );
+      return messageHandler(res, 404, "No Services Found!");
     }
 
     return messageHandler(res, 200, "All services", services);
@@ -186,18 +221,13 @@ const delServicebyId = async (req, res) => {
       (element) => element._id.toString() === serviceId
     );
 
-    
-    console.log(findIndex)
-
-
     if (findIndex > -1 && user.role === "service provider") {
-      await Service.deleteOne({_id : serviceId})
+      await Service.deleteOne({ _id: serviceId });
       user.services.splice(findIndex, 1);
       await user.save();
       messageHandler(res, 200, "Service Deleted Succesfully");
-    }
-    else{
-      messageHandler(res, 403 , "UnAuthorized to delete")
+    } else {
+      messageHandler(res, 403, "UnAuthorized to delete");
     }
   } catch (error) {
     console.log(error);
@@ -207,6 +237,7 @@ const delServicebyId = async (req, res) => {
 
 module.exports = {
   createService,
+  UploadServicePic,
   getAllservices,
   getServiceById,
   editServiceById,

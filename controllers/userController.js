@@ -2,7 +2,9 @@ const { User } = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { transporter } = require("../utils/nodemailer");
-require('dotenv').config()
+const { messageHandler } = require("../utils/messageHandler");
+const { uploadTocloud } = require("../utils/cloudinary");
+require("dotenv").config();
 
 const registerHandler = async (req, res) => {
   try {
@@ -47,7 +49,6 @@ const loginHandler = async (req, res) => {
 
     const user = await User.findOne({ email });
 
-
     if (!user) {
       return res.status(400).json({ message: "User Not Found!" });
     }
@@ -56,24 +57,22 @@ const loginHandler = async (req, res) => {
 
     if (passverify) {
       const userId = user._id;
-      const secretKey = process.env.SECRET_KEY
+      const secretKey = process.env.SECRET_KEY;
 
       const token = jwt.sign({ userId }, secretKey);
 
-      if(token){
-        res.cookie("token" ,token , {
-          maxAge :  1000*60*60*24*30    ,     // one month in miiliseconds
-          httpOnly : true,
-          secure : true,
-          sameSite: "None"
-        } )
+      if (token) {
+        res.cookie("token", token, {
+          maxAge: 1000 * 60 * 60 * 24 * 30, // one month in miiliseconds
+          httpOnly: true,
+          secure: true,
+          sameSite: "None",
+        });
       }
-  
+
       return res.status(200).json({
         message: "Logged in Succesfully",
       });
-
-
     } else {
       return res.status(400).json({ message: "Password Incorrect!" });
     }
@@ -222,11 +221,10 @@ const deleteUserHandler = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const  userId  = req.userId;
+    const userId = req.userId;
 
-    const user = await User.findById(userId)
+    const user = await User.findById(userId);
     // .populate({path :"orders"})
-
 
     if (user) {
       res.status(200).json({ message: "user Found", payload: user });
@@ -246,12 +244,10 @@ const changePasshandler = async (req, res) => {
     const { oldpass, newPass, confirmPass } = req.body;
 
     if (oldpass === "" || newPass !== confirmPass) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "All credentails Required! | newPass and confirm pass doesnot match",
-        });
+      return res.status(400).json({
+        message:
+          "All credentails Required! | newPass and confirm pass doesnot match",
+      });
     }
 
     const user = await User.findById(userId);
@@ -279,6 +275,31 @@ const changePasshandler = async (req, res) => {
   }
 };
 
+const uploadProfilePic = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return messageHandler(res, 404, "User not Found");
+    }
+    const imagePath = req.file.path;
+    
+    const upload = await uploadTocloud(imagePath);
+
+    if (upload) {
+      user.profilepicUrl = upload.secure_url;
+      await user.save();
+
+      return messageHandler(res, 200, "upload Succesfull", upload);
+    } else {
+      return messageHandler(res, 400 , "Some error , Try after Sometime");
+    }
+  } catch (error) {
+    messageHandler(res, 500, "Server Error");
+    console.error(error);
+  }
+};
+
 module.exports = {
   registerHandler,
   loginHandler,
@@ -287,4 +308,5 @@ module.exports = {
   deleteUserHandler,
   getUser,
   changePasshandler,
+  uploadProfilePic,
 };

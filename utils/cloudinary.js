@@ -9,19 +9,19 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
-const upload = async (imagePath) => {
+const uploadTocloud = async (imagePath) => {
   try {
-    const up = await cloudinary.uploader.upload(imagePath, {
-      folder: "RoboLox",
+    const upload = await cloudinary.uploader.upload(imagePath, {
+      folder: "Service nest",
     });
 
-    if (up) {
-      messageHandler(res, 200, "Upload Succesfull");
-    }
+      return upload
+  
+   
   } catch (error) {
     console.log(error);
   }
 };
 
 
-module.exports = {upload}
+module.exports = {uploadTocloud}
