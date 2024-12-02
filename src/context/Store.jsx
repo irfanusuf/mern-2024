@@ -1,4 +1,3 @@
-
 import React, { createContext, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -13,22 +12,46 @@ const Store = () => {
     loading: false,
     username: "",
     email: "",
+    user: {},
   });
+
+
+  const verifyToken = useCallback(async () => {
+
+    try {
+      const res = await api.get("/user/isAuth");
+      if (res.status === 200 ) {  
+          return true
+        }
+        else{
+          return false
+        }
+    } catch (error) {
+      console.log(error)
+
+    }
+   
+  } , []) ;
+
+
 
   const fetchData = useCallback(async () => {
     try {
-      
       const response = await api.get("/user/getUser");
 
       setStore((prev) => ({
         ...prev,
         username: response.data.payload.username,
         email: response.data.payload.email,
+        user: response.data.payload,
       }));
     } catch (error) {
       console.log(error);
     }
   }, []);
+
+
+  
 
   const handleRegister = async (e, formData) => {
     e.preventDefault();
@@ -50,7 +73,6 @@ const Store = () => {
   const handleLogin = async (e, formData) => {
     e.preventDefault();
     try {
-     
       setStore((prev) => ({ ...prev, loading: true }));
       const response = await api.post("/user/login", formData);
 
@@ -73,9 +95,9 @@ const Store = () => {
 
   const handleForgotPass = async (e, email) => {
     e.preventDefault();
-   
+
     try {
-      const res = await api.post("/user/forgotPass"  ,{ email: email });
+      const res = await api.post("/user/forgotPass", { email: email });
 
       if (res.status === 200) {
         toast.success(res.data.message);
@@ -89,7 +111,7 @@ const Store = () => {
 
   const handleResetPass = async (e, userId, formData) => {
     e.preventDefault();
-  
+
     try {
       const res = await api.put(`/user/password/reset/${userId}`, formData);
       if (res.status === 200) {
@@ -107,7 +129,7 @@ const Store = () => {
 
   const handleDeleteUser = async (e, password) => {
     e.preventDefault();
-   
+
     try {
       const res = await api.post("/user/delete", { password: password });
 
@@ -122,16 +144,30 @@ const Store = () => {
     }
   };
 
+  const uploadProfileImage = async (formData) => {
+    try {
+      const res = await api.post("/user/upload/profile", formData);
+      if ((res.status = 200)) {
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      toast.error("Server Error");
+      console.log(error);
+    }
+  };
+
   return (
     <Context.Provider
       value={{
         ...store,
+        verifyToken,
         handleRegister,
         handleLogin,
         fetchData,
         handleForgotPass,
         handleResetPass,
         handleDeleteUser,
+        uploadProfileImage,
       }}
     >
       <App />

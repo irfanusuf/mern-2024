@@ -14,15 +14,13 @@ import ResetPass from "./components/ResetPass";
 import DeleteUser from "./components/DeleteUser";
 import SecureProfile from "./components/SecureProfile";
 import { Context } from "./context/Store";
+import UserProfile from "./components/UserProfile";
 
 const App = () => {
   const { fetchData, loading } = useContext(Context);
 
-
-  useEffect(() => {
-   
+  useEffect(() => { 
       fetchData();
-   
   }, [loading,fetchData]);
 
   return (
@@ -40,8 +38,9 @@ const App = () => {
           <Route path="/user/forgotpass" element={<ForgotPass />} />
           <Route path="/user/resetPass/:userId" element={<ResetPass />} />
           {/* secure routes */}
-          <Route path="/user/delete/:userId" element={<DeleteUser />} />
+          <Route path="/user/delete" element={<DeleteUser />} />
           <Route path="/user/secureprofile" element={<SecureProfile />} />
+          <Route path="/user/user-profile"  element={<UserProfile/>}/>
         </Routes>
       </div>
       <Footer />

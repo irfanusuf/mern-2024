@@ -1,8 +1,11 @@
 import React from "react";
-import IsAuthorised from "../utils/IsAuthorised";
+
 
 const SecureProfile = () => {
-  IsAuthorised();
+
+  
+
+
 
   return (
     <div>

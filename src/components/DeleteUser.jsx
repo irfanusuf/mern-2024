@@ -2,13 +2,12 @@ import React, { useContext, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "./Form.css";
 import { FaLock } from "react-icons/fa";
-import { useParams } from "react-router-dom";
 import { Context } from "../context/Store";
 
 const DeleteUser = () => {
   const { handleDeleteUser } = useContext(Context);
   const [password, setPass] = useState("");
-  const { userId } = useParams();
+
 
   return (
     <>
@@ -38,7 +37,7 @@ const DeleteUser = () => {
 
             <button
               onClick={(e) => {
-                handleDeleteUser(e , userId , password);
+                handleDeleteUser(e , password);
               }}
             >
             

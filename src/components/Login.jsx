@@ -60,7 +60,7 @@ const Login = () => {
 
               <p> Or </p>
 
-              <Link to="/user/register"> Register with Us </Link>
+            <Link to="/user/register"> Register with Us </Link>
           
           </form>
         </div>
