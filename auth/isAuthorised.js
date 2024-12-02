@@ -4,7 +4,7 @@ require('dotenv').config()
 
 const isAuthorised = async (req, res) => {
   try {
-    const { token } = req.params;
+    const { token } = req.cookies;
     const secretKey = process.env.SECRET_KEY;
 
     if (!token) {

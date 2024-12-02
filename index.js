@@ -50,10 +50,9 @@ app.get("/", (req, res) => {
   res.json({ message: "hello from the server " });
 });
 
-app.get("/user/isAuth/:token", isAuthorised);
+app.get("/user/isAuth", isAuthorised);
 
 // user routes
-
 app.post("/user/register", registerHandler); // done
 app.post("/user/login", loginHandler); // done
 app.post("/user/forgotPass", forgotPassHandler); // done
@@ -66,7 +65,6 @@ app.put("/user/changepassword", isAuthenticated, changePasshandler); // done
 app.get("/user/getuser", isAuthenticated, getUser); // done
 
 // service Routes
-
 app.post("/seller/create/service", isAuthenticated, createService);
 app.post("/seller/upload/serviceImage" , multmid , isAuthenticated , UploadServicePic)
 app.get("/services/all", isAuthenticated, getAllservices);
@@ -75,7 +73,6 @@ app.put("/seller/edit/service", isAuthenticated, editServiceById);
 app.delete("/seller/delete/service", isAuthenticated, delServicebyId);
 
 // order Routes
-
 app.post("/customer/create/order", isAuthenticated, createOrder);
 app.put("/customer/cancel/order", isAuthenticated, cancelOrder);
 app.get("/customer/fetch/orders" ,isAuthenticated , getAllOrders )
